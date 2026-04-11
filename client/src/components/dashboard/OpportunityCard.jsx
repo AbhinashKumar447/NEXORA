@@ -17,6 +17,7 @@ export default function OpportunityCard({ opportunity }) {
 	const { title, type, duration, by, metric, cta } = opportunity;
 	const [isApplying, setIsApplying] = useState(false);
 	const [error, setError] = useState('');
+	const isCtaDisabled = Boolean(cta?.disabled) || isApplying;
 
 	const ctaVariant =
 		cta?.variant === 'success'
@@ -28,6 +29,7 @@ export default function OpportunityCard({ opportunity }) {
 	const ctaClassName = cta?.variant === 'success' ? 'bg-emerald-600 hover:bg-emerald-700' : '';
 
 	async function onCtaClick() {
+		if (isCtaDisabled) return;
 		if (!cta?.opportunityId) return;
 		setError('');
 		setIsApplying(true);
@@ -75,7 +77,7 @@ export default function OpportunityCard({ opportunity }) {
 				<Button
 					className={ctaClassName}
 					variant={ctaVariant}
-					disabled={isApplying}
+					disabled={isCtaDisabled}
 					onClick={onCtaClick}
 				>
 					{isApplying ? 'Applying…' : cta?.label || 'View'}

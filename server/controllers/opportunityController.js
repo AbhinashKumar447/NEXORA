@@ -2,13 +2,15 @@ const { asyncHandler } = require('../utils/asyncHandler');
 const opportunityService = require('../services/opportunityService');
 
 const createOpportunity = asyncHandler(async (req, res) => {
-	const { title, description, type, skills } = req.body;
+	const { title, description, type, skills, startDate, endDate } = req.body;
 	const op = await opportunityService.createOpportunity({
 		ownerId: req.user.id,
 		title,
 		description,
 		type,
 		skills,
+		startDate,
+		endDate,
 	});
 	res.status(201).json({ success: true, opportunity: op });
 });

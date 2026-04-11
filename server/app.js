@@ -14,7 +14,11 @@ const { notFound, errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 
-app.use(helmet());
+app.use(
+	helmet({
+		crossOriginResourcePolicy: { policy: 'cross-origin' },
+	})
+);
 
 const corsOrigins = process.env.CORS_ORIGIN
 	? process.env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean)
@@ -29,7 +33,7 @@ app.use(
 					if (corsOrigins.includes(origin)) return cb(null, true);
 					if (
 						process.env.NODE_ENV !== 'production' &&
-						/^https?:\/\/localhost:\d+$/.test(origin)
+						/^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)
 					)
 						return cb(null, true);
 					return cb(new Error('Not allowed by CORS'), false);
@@ -65,3 +69,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 module.exports = app;
+
+

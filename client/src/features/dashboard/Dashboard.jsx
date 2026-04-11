@@ -74,16 +74,31 @@ export default function Dashboard() {
 
 	const mappedOpportunities = useMemo(
 		() =>
-			(opportunities || []).map((op) => ({
-				id: op._id,
-				title: op.title,
-				type: typeLabel(op.type),
-				duration: op.status === 'open' ? 'Open' : 'Closed',
-				by: op?.ownerId?.name || 'Unknown',
-				metric: { icon: 'applied', value: Array.isArray(op.applicants) ? op.applicants.length : 0, label: 'Applied' },
-				cta: { label: 'Apply', variant: 'default', opportunityId: op._id },
-			})),
-		[opportunities]
+			(opportunities || []).map((op) => {
+				const ownerId = op?.ownerId?._id
+					? String(op.ownerId._id)
+					: op?.ownerId
+						? String(op.ownerId)
+						: '';
+				const isOwner = Boolean(me?._id) && ownerId === String(me._id);
+
+				return {
+					id: op._id,
+					title: op.title,
+					type: typeLabel(op.type),
+					duration: op.status === 'open' ? 'Open' : 'Closed',
+					by: op?.ownerId?.name || 'Unknown',
+					metric: {
+						icon: 'applied',
+						value: Array.isArray(op.applicants) ? op.applicants.length : 0,
+						label: 'Applied',
+					},
+					cta: isOwner
+						? { label: 'Your post', variant: 'secondary', opportunityId: op._id, disabled: true }
+						: { label: 'Apply', variant: 'default', opportunityId: op._id },
+				};
+			}),
+		[opportunities, me?._id]
 	);
 
 	return (

@@ -54,8 +54,9 @@ export default function OpportunityList() {
 				typeLabel: typeLabel(op.type),
 				ownerName: op?.ownerId?.name || 'Unknown',
 				appliedCount: Array.isArray(op.applicants) ? op.applicants.length : 0,
+				isOwner: Boolean(me?._id) && String(op?.ownerId?._id || op?.ownerId || '') === String(me._id),
 			})),
-		[items]
+		[items, me?._id]
 	);
 
 	async function onApply(id) {
@@ -125,8 +126,12 @@ export default function OpportunityList() {
 											) : null}
 										</div>
 										<div className="flex shrink-0 items-center gap-2">
-											<Button variant="outline" onClick={() => onApply(op._id)}>
-												Apply
+											<Button
+												variant="outline"
+												disabled={op.isOwner}
+												onClick={() => onApply(op._id)}
+											>
+												{op.isOwner ? 'Your post' : 'Apply'}
 											</Button>
 										</div>
 									</div>

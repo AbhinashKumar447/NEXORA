@@ -19,19 +19,33 @@ export default function CreateOpportunity() {
 	const [description, setDescription] = useState('');
 	const [type, setType] = useState('team');
 	const [skills, setSkills] = useState('');
+	const [startDate, setStartDate] = useState('');
+	const [endDate, setEndDate] = useState('');
 	const [isSaving, setIsSaving] = useState(false);
 	const [error, setError] = useState('');
+
+	const todayInput = new Date().toISOString().slice(0, 10);
+	const maxInput = (() => {
+		const d = new Date();
+		d.setMonth(d.getMonth() + 2);
+		return d.toISOString().slice(0, 10);
+	})();
 
 	async function onSubmit(e) {
 		e.preventDefault();
 		setError('');
 		setIsSaving(true);
 		try {
+			if ((startDate && !endDate) || (!startDate && endDate)) {
+				throw new Error('Please select both start and end dates');
+			}
 			await opportunityService.createOpportunity({
 				title,
 				description,
 				type,
 				skills: splitCsv(skills),
+				startDate: startDate || undefined,
+				endDate: endDate || undefined,
 			});
 			navigate('/opportunities', { replace: true });
 		} catch (err) {
@@ -90,6 +104,34 @@ export default function CreateOpportunity() {
 								className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/40"
 								placeholder="React, Node, DSA"
 							/>
+						</div>
+						<div>
+							<label className="text-sm font-medium text-slate-700">Active dates</label>
+							<div className="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
+								<div>
+									<label className="text-xs font-medium text-slate-600">Start date</label>
+									<input
+										type="date"
+										value={startDate}
+										onChange={(e) => setStartDate(e.target.value)}
+										min={todayInput}
+										max={maxInput}
+										className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/40"
+									/>
+								</div>
+								<div>
+									<label className="text-xs font-medium text-slate-600">End date</label>
+									<input
+										type="date"
+										value={endDate}
+										onChange={(e) => setEndDate(e.target.value)}
+										min={todayInput}
+										max={maxInput}
+										className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/40"
+									/>
+								</div>
+							</div>
+							<p className="mt-1 text-xs text-slate-500">Optional. Opportunity is visible from start date and auto-deletes after end date.</p>
 						</div>
 						<div>
 							<label className="text-sm font-medium text-slate-700">Description</label>

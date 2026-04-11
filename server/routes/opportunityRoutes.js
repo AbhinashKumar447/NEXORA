@@ -35,6 +35,8 @@ router.post(
 		body('description').optional().isString().trim().isLength({ max: 2000 }),
 		body('type').isIn(['team', 'mentorship', 'internship', 'study_help']),
 		body('skills').optional(),
+		body('startDate').optional().isISO8601({ strict: true }),
+		body('endDate').optional().isISO8601({ strict: true }),
 	],
 	validate,
 	createOpportunity

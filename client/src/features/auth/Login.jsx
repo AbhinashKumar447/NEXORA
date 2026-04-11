@@ -31,55 +31,85 @@ export default function Login() {
 	}
 
 	return (
-		<div className="min-h-screen bg-slate-50">
+		<div className="min-h-screen bg-slate-950">
 			<div className="mx-auto flex min-h-screen max-w-md items-center px-4 py-10">
-				<Card className="w-full rounded-2xl">
-					<CardHeader>
-						<CardTitle className="text-xl">Login</CardTitle>
-						<p className="mt-1 text-sm text-slate-500">Welcome back! Sign in to continue.</p>
+				<Card className="w-full border-slate-800 bg-slate-900 shadow-none hover:shadow-none">
+					<CardHeader className="pb-4">
+						<div className="flex rounded-xl bg-slate-800/80 p-1">
+							<Link
+								to="/login"
+								className="flex-1 rounded-lg bg-slate-950 px-3 py-2 text-center text-sm font-medium text-slate-100"
+							>
+								Sign In
+							</Link>
+							<Link
+								to="/signup"
+								className="flex-1 rounded-lg px-3 py-2 text-center text-sm font-medium text-slate-300 hover:text-slate-100"
+							>
+								Sign Up
+							</Link>
+						</div>
+						<CardTitle className="mt-4 text-base font-semibold text-slate-100">Welcome</CardTitle>
+						<p className="mt-1 text-sm text-slate-400">Choose a sign-in method.</p>
 					</CardHeader>
 					<CardContent>
-						<form onSubmit={onSubmit} className="space-y-4">
-							<div>
-								<label className="text-sm font-medium text-slate-700">Email</label>
-								<input
-									type="email"
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
-									required
-									className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/40"
-									placeholder="you@college.edu"
-								/>
-							</div>
-							<div>
-								<label className="text-sm font-medium text-slate-700">Password</label>
-								<input
-									type="password"
-									value={password}
-									onChange={(e) => setPassword(e.target.value)}
-									required
-									className="mt-1 h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/40"
-									placeholder="••••••••"
-								/>
-							</div>
-
-							{error ? (
-								<div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
-									{error}
-								</div>
-							) : null}
-
-							<Button type="submit" className="w-full" disabled={isLoading}>
-								{isLoading ? 'Signing in…' : 'Sign In'}
+						<div className="space-y-3">
+							<Button
+								type="button"
+								disabled
+								className="w-full border border-slate-700 bg-slate-800 text-slate-100 hover:bg-slate-800"
+							>
+								Continue with Google
+							</Button>
+							<Button
+								type="button"
+								disabled
+								className="w-full border border-slate-700 bg-slate-800 text-slate-100 hover:bg-slate-800"
+							>
+								Continue with GitHub
 							</Button>
 
-							<p className="text-center text-sm text-slate-600">
-								Don’t have an account?{' '}
-								<Link className="font-medium text-blue-700 hover:underline" to="/signup">
-									Create one
-								</Link>
-							</p>
-						</form>
+							<div className="py-1 text-center text-xs font-medium text-slate-500">OR CONTINUE WITH</div>
+
+							<form onSubmit={onSubmit} className="space-y-3">
+								<div>
+									<label className="text-sm font-medium text-slate-200">Email</label>
+									<input
+										type="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+										required
+										className="mt-1 h-10 w-full rounded-xl border border-slate-800 bg-slate-950 px-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500/40"
+										placeholder="name@example.com"
+									/>
+								</div>
+								<div>
+									<label className="text-sm font-medium text-slate-200">Password</label>
+									<input
+										type="password"
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
+										required
+										className="mt-1 h-10 w-full rounded-xl border border-slate-800 bg-slate-950 px-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500/40"
+										placeholder="••••••••"
+									/>
+								</div>
+
+								{error ? (
+									<div className="rounded-xl border border-rose-900/50 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">
+										{error}
+									</div>
+								) : null}
+
+								<Button
+									type="submit"
+									disabled={isLoading}
+									className="w-full bg-emerald-500 text-slate-950 hover:bg-emerald-400"
+								>
+									{isLoading ? 'Signing in…' : 'Continue with Email'}
+								</Button>
+							</form>
+						</div>
 					</CardContent>
 				</Card>
 			</div>

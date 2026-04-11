@@ -14,6 +14,8 @@ const opportunitySchema = new mongoose.Schema(
 		skills: [{ type: String, trim: true, maxlength: 40 }],
 		status: { type: String, enum: ['open', 'closed'], default: 'open' },
 		applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+		startsAt: { type: Date, default: null },
+		expiresAt: { type: Date, default: null },
 	},
 	{ timestamps: true }
 );
@@ -21,5 +23,7 @@ const opportunitySchema = new mongoose.Schema(
 opportunitySchema.index({ collegeId: 1, createdAt: -1 });
 opportunitySchema.index({ type: 1, createdAt: -1 });
 opportunitySchema.index({ skills: 1 });
+opportunitySchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+opportunitySchema.index({ startsAt: 1 });
 
 module.exports = mongoose.model('Opportunity', opportunitySchema);
